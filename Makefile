@@ -1,9 +1,10 @@
 OBJ = integrate.o main.o
 CC = g++
 CFLAGS = -Wall -g 
+TARGETS = main.cpp integrate.cpp  differentiation.cpp
 
-analysis: main.cpp integrate.cpp 
-	$(CC) $(CFLAGS) main.cpp -lm -o Numerical_Analysis
+analysis: $(TARGETS)
+	$(CC) $(CFLAGS) $(TARGETS) -lm -o Numerical_Analysis
 	
 clean: 
 	rm *.o

@@ -1,48 +1,55 @@
-
 #ifndef MAIN_CPP
 #define MAIN_CPP
 
 #include <iostream>
-#include <math.h>
+#include <vector>
 
-#include "differentiation.h"
-#include "integrate.h"
+#include "root_finding.h"
+#include "interpolation.h"
+#include "data_point.h"
 
 using namespace std;
 
-double function1(double x) {
-	return pow(x,2)*exp(-pow(x,2));
+int main(int argc, const char * argv[]) {
+	Interpolation interp;
+	vector<Data_Point> data;
+	double alpha = 8.4;
+	data.push_back(Data_Point(8.1,16.94410));
+	data.push_back(Data_Point(8.3, 17.56492));
+	data.push_back(Data_Point(8.6, 18.50515));
+	data.push_back(Data_Point(8.7, 18.82091));
+	
+	//interp.laGrange(alpha, data);
+	//interp.nevillesMethod(alpha, data);
+	//interp.newtonsDividedDifferenceMethod(alpha, data);
+	
+	vector<Data_Point> data1;
+	data1.push_back(Data_Point(-3, 81));
+	data1.push_back(Data_Point(-1,1));
+	data1.push_back(Data_Point(1,1));
+	data1.push_back(Data_Point(3,81));
+	
+	double fp0 = -81;
+	double fpn = 81;
+	
+	//interp.clampedCubicSpline(data1, fp0, fpn);
+	//cout << endl;
+	
+	vector<Data_Point> data2;
+	data2.push_back(Data_Point(-1, 1));
+	data2.push_back(Data_Point(0,0));
+	data2.push_back(Data_Point(1,1));
+	
+	fp0 = -3;
+	fpn = 3;
+	
+	//interp.clampedCubicSpline(data2, fp0, fpn);
+	
+	//cout << endl;
+	
+	interp.naturalCubicSpline(data2);
+	
 }
 
-double function2(double x) {
-	return pow(x, 2.0) * exp(-x);
-}
-
-
-int main() {
-	double f_data[] = {9.025013, 11.02318, 13.46374, 16.44465};
-	cout << "f'(x0 = " << 1.1 << ") = " << three_point_foward(0.1, f_data[0], f_data[1], f_data[2]) << " using three point forward" << endl;
-	cout << "f'(x0 = " << 1.2 << ") = " << three_point_middle(0.1, f_data[0], f_data[2]) << " using three point middle" << endl;
-	cout << "f'(x0 = " << 1.3 << ") = " << three_point_middle(0.1, f_data[1], f_data[3]) << " using three point middle" << endl;
-	cout << "f'(x0 = " << 1.4 << ") = " << three_point_backward(0.1, f_data[1], f_data[2], f_data[3]) << " using three point backward" << endl;
-	
-	cout << "integrate from 0 to 2 of x^2 e^(-x^2) = " << midpoint_rule(0.25, function1, 0, 2) << " using midpoint rule.";
-	cout << endl;
-	
-	cout << "integrate from 0 to 2 of x^2 e^(-x^2) = " << trapezoidal_integration(0.25, function1, 0, 2) << " using trapezoidal rule.";
-	cout << endl;
-	
-	cout << "integrate from 0 to 2 of x^2 e^(-x^2) = " << simpsons_one_third_integration(0.25, function1, 0, 2) << " using simpson's 1/3 rule.";
-	cout << endl;
-	
-	cout << "integrate from 0 to 1 of x^2 e^(-x) = " << gaussian_quadrature_n2(function2, 0, 1) << " using gaussian quadrature with n = 2";
-	cout << endl;
-	
-	cout << "integrate from 0 to 1 of x^2 e^(-x) = " << gaussian_quadrature_n3(function2, 0, 1) << " using gaussian quadrature with n = 3";
-	cout << endl;
-	
-	
-	return 0;
-}
 
 #endif

@@ -25,6 +25,30 @@ double rk4(double h, double (*f)(double,double), double x_0, double x_max, doubl
 	return acc;
 }
 
+double adams_bashforth_two_step(double h, double (*f)(double, double), double x_0, double x_max, double y_0, double y_1){
+	double acc = 0.0;
+	double y_i = y_1;
+	double y_im1 = y_0;
+	double y_ip1;
+	cout << "y(" << x_0 << ") = " << y_0 << endl;
+	cout << "y(" << x_0 + h << ") = " << y_1 << endl;
+	
+	for (double x_i = x_0 + h; x_i + h <= x_max; x_i += h) {
+		/*cout << "x_i = " << x_i << endl;
+		cout << "y_i = " << y_i << endl;
+		cout << "y_{i  -1} = " << y_im1 << endl;*/
+		
+		y_ip1 = y_i + (h/2.0)*(3*f(x_i, y_i) - f(x_i - h, y_im1));
+		y_im1 = y_i;
+		y_i = y_ip1;
+
+		cout << "y(" << x_i + h<< ") = " << y_ip1 << " +- " << pow(h, 2.0) << endl;
+	}
+	cout << endl;
+	
+	return acc;
+}
+
 
 
 #endif

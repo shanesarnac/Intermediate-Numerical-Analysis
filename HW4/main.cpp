@@ -25,8 +25,10 @@ int main() {
 	double x_0 = 0.0;
 	double x_max = 0.5;
 	double y_0 = 0.0;
+	double y_1 = pow(0.1, 2.0)/ 2.0;
 	
-	rk4(h, f1, x_0, x_max, y_0);
+	//rk4(h, f1, x_0, x_max, y_0);
+	adams_bashforth_two_step(h, f1, x_0, x_max, y_0, y_1);
 	print_real_solution(h, x_0, x_max);
 	
 	return 0;

@@ -15,7 +15,11 @@ double rk4(double h, double (*f)(double,double), double x_0, double x_max, doubl
 		double k3 = h*f(x_i + h/2.0, y_i + k2/2.0);
 		double k4 = h*f(x_i + h, y_i + k3);
 		y_ip1 = y_i + (1.0/6.0)*(k1 + 2.0*k2 + 2.0*k3 + k4);
-		cout << "y_{i + 1}(" << x_i + h << ") = " << y_ip1 << endl;
+		cout << "k1 = " << k1 << endl;
+		cout << "k2 = " << k2 << endl;
+		cout << "k3 = " << k3 << endl;
+		cout << "k4 = " << k4 << endl;
+		cout << "y_{i + 1}(" << x_i + h << ") = " << y_ip1 << endl << endl;
 	}
 	
 	return acc;

@@ -21,9 +21,9 @@ void print_real_solution(double h, double x_0, double x_max) {
 
 int main() {
 	
-	double h = 0.2;
+	double h = 0.1;
 	double x_0 = 0.0;
-	double x_max = 1.0;
+	double x_max = 0.5;
 	double y_0 = 0.0;
 	
 	rk4(h, f1, x_0, x_max, y_0);

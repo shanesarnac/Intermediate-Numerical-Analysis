@@ -29,7 +29,8 @@ int main() {
 	
 	//rk4(h, f1, x_0, x_max, y_0);
 	//adams_bashforth_two_step(h, f1, x_0, x_max, y_0, y_1);
-	adams_moulton_two_step(h, f1, x_0, x_max, y_0, y_1);
+	//adams_moulton_two_step(h, f1, x_0, x_max, y_0, y_1);
+	improved_eulers(h, f1, x_0, x_max, y_0);
 	print_real_solution(h, x_0, x_max);
 	
 	return 0;

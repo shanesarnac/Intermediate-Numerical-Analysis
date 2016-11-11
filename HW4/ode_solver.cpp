@@ -76,6 +76,25 @@ double adams_moulton_two_step(double h, double (*f)(double, double), double x_0,
 	return acc;
 }
 
+double improved_eulers(double h, double (*f)(double, double), double x_0, double x_max, double y_0) {
+	cout << "Improved Euler's Method" << endl;
+	double y_i = y_0;
+	double y_bar, y_ip1;
+	
+	cout << "y(" << x_0 << ") = " << y_0 << endl;
+	
+	for (double x_i = x_0; x_i < x_max; x_i += h) {
+		y_bar = y_i + h*f(x_i, y_i);
+		y_ip1 = y_i + (h/2.0)*(f(x_i,y_i) + f(x_i + h, y_bar));
+		y_i = y_ip1;
+		cout << "y bar = " << y_bar << endl;
+		cout << "y(" << x_i + h<< ") = " << y_ip1 << endl << endl;
+	}
+	cout << endl;
+	
+	return 0.0;
+}
+
 
 
 #endif

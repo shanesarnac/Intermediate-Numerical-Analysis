@@ -8,6 +8,8 @@ using namespace std;
 
 double rk4(double h, double (*f)(double,double), double x_0, double x_max, double y_0);
 
+double rk4_coupled(double h, double (*f1)(double,double,double), double (*f2)(double, double, double), double t_max, double t_0, double x_0, double y_0);
+
 double adams_bashforth_two_step(double h, double (*f)(double, double), double x_0, double x_max, double y_0, double y_1);
 
 double adams_bashforth_four_step_predictor(double h, double (*f)(double, double), double x_i, double y_i, double x_im1, double y_im1, 

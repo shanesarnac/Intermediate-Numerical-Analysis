@@ -26,6 +26,44 @@ double rk4(double h, double (*f)(double,double), double x_0, double x_max, doubl
 	return acc;
 }
 
+double rk4_coupled(double h, double (*f1)(double,double,double), double (*f2)(double, double, double), double t_max, double t_0, double x_0, double y_0) {
+	cout << "RK4 Coupled" << endl;
+	double x_ip1 = x_0;
+	double y_ip1 = y_0;
+	double x_i, y_i;
+	
+	cout << "x(" << t_0 << ") = " << x_0 << endl;
+	//cout << "y(" << t_0 << ") = " << y_0 << endl;
+	
+	for(double t_i = t_0; t_i < t_max; t_i += h) {
+		x_i = x_ip1;
+		y_i = y_ip1;
+		
+		double k0 = h*f1(t_i, x_i, y_i);
+		double l0 = h*f2(t_i, x_i, y_i);
+		double k1 = h*f1(t_i + 0.5*h, x_i + 0.5*k0, y_i + 0.5*l0); 
+		double l1 = h*f2(t_i + 0.5*h, x_i + 0.5*k0, y_i + 0.5*l0); 
+		double k2 = h*f1(t_i + 0.5*h, x_i + 0.5*k1, y_i + 0.5*l1); 
+		double l2 = h*f2(t_i + 0.5*h, x_i + 0.5*k1, y_i + 0.5*l1); 
+		double k3 = h*f1(t_i + h, x_i + k2, y_i + l2); 
+		double l3 = h*f2(t_i + h, x_i + k2, y_i + l2); 
+		
+		//cout << "k0 = " << k0 << endl; 
+		//cout << "k1 = " << k1 << endl; 
+		//cout << "k2 = " << k2 << endl; 
+		//cout << "k3 = " << k3 << endl; 
+		
+		x_ip1 = x_i + (1.0/6.0)*(k0 + 2.0*k1 + 2.0*k2 + k3);
+		y_ip1 = y_i + (1.0/6.0)*(l0 + 2.0*l1 + 2.0*l2 + l3);
+		
+		cout << "x(" << t_i + h << ") = " << x_ip1 << endl;
+		//cout << "y(" << t_i + h << ") = " << y_ip1 << endl;
+	} 
+	cout << endl;
+	
+	return 0.0;
+}
+
 double adams_bashforth_two_step(double h, double (*f)(double, double), double x_0, double x_max, double y_0, double y_1){
 	cout << "Adams-Bashforth Two-Step" << endl;
 	double acc = 0.0;

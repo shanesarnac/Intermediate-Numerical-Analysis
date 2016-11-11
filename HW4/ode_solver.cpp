@@ -4,6 +4,7 @@
 #include "ode_solver.h"
 
 double rk4(double h, double (*f)(double,double), double x_0, double x_max, double y_0) {
+	cout << "RK4" << endl;
 	double acc = 0.0;
 	double y_ip1 = y_0;
 	double y_i;
@@ -26,6 +27,7 @@ double rk4(double h, double (*f)(double,double), double x_0, double x_max, doubl
 }
 
 double adams_bashforth_two_step(double h, double (*f)(double, double), double x_0, double x_max, double y_0, double y_1){
+	cout << "Adams-Bashforth Two-Step" << endl;
 	double acc = 0.0;
 	double y_i = y_1;
 	double y_im1 = y_0;
@@ -42,6 +44,31 @@ double adams_bashforth_two_step(double h, double (*f)(double, double), double x_
 		y_im1 = y_i;
 		y_i = y_ip1;
 
+		cout << "y(" << x_i + h<< ") = " << y_ip1 << " +- " << pow(h, 2.0) << endl;
+	}
+	cout << endl;
+	
+	return acc;
+}
+
+// Note: Only works for y' = y + x (had to solve for y_ip1)
+double adams_moulton_two_step(double h, double (*f)(double, double), double x_0, double x_max, double y_0, double y_1) {
+	cout << "Adams-Moulton Two Step" << endl;
+	double acc = 0.0;
+	double x_im1 = x_0;
+	double y_i = y_1;
+	double y_im1 = y_0;
+	double y_ip1;
+	
+	cout << "y(" << x_0 << ") = " << y_0 << endl;
+	cout << "y(" << x_0 + h << ") = " << y_1 << endl;
+	
+	for (double x_i = x_0 + h; x_i + h <= x_max; x_i += h) {
+		y_ip1 = (y_i + (h/12.0) * (5.0*(x_i + h) + 8.0*f(x_i, y_i) - f(x_im1, y_im1)))*pow(1.0 - (5.0*h)/12.0, -1.0);
+		y_im1 = y_i;
+		x_im1 = x_i;
+		y_i = y_ip1;
+		
 		cout << "y(" << x_i + h<< ") = " << y_ip1 << " +- " << pow(h, 2.0) << endl;
 	}
 	cout << endl;

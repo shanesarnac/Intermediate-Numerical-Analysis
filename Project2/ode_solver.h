@@ -12,8 +12,28 @@ vector<Data_Point> rk4(double h, double (*f)(double,double), Data_Point initial_
 
 double rk4_2_coupled(double h, double (*f1)(double,double,double), double (*f2)(double, double, double), double t_max, double t_0, double x_0, double y_0);
 
-double rk4_3_coupled(double h, double (*f1)(double,double,double,double), double (*f2)(double, double, double, double),
+vector<vector<double> > rk4_3_coupled(double h, double (*f1)(double,double,double,double), double (*f2)(double, double, double, double),
 						double (*f3)(double, double, double, double),double max, double t_0, double x_0, double y_0, double z_0);
+						
+vector<vector<double> > rk4_5_coupled(
+		double h, 
+		double (*f1)(double,double,double,double, double, double), 
+		double (*f2)(double,double,double,double, double, double),
+		double (*f3)(double,double,double,double, double, double), 
+		double (*f4)(double,double,double,double, double, double), 
+		double (*f5)(double,double,double,double, double, double),
+		double max, 
+		double t_0, 
+		double x1_0, 
+		double x2_0, 
+		double x3_0, 
+		double x4_0, 
+		double x5_0);
+						
+vector<vector<double> > rk4_coupled_general(double h, double max, vector<double (*)(double,double,double,double)> functions, vector<double> initial_values);
+
+
+
 
 double adams_bashforth_two_step(double h, double (*f)(double, double), double x_0, double x_max, double y_0, double y_1);
 

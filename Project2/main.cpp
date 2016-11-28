@@ -9,10 +9,12 @@
 #include "integrate.h"
 #include "interpolation.h"
 #include "ode_solver.h"
+#include "root_finding.h"
 
 using namespace std;
 
 vector<vector<double> > f_and_g_values;
+double prandtl;
 
 
 double f1(double nu, double v1_i, double v2_i, double u1_i, double u2_i, double u3_i) {
@@ -32,22 +34,25 @@ double g1(double nu, double v1_i, double v2_i, double u1_i, double u2_i, double 
 }
 
 double g2(double nu, double v1_i, double v2_i, double u1_i, double u2_i, double u3_i) {
-	double pr = 4.0; // can change
+	double pr = prandtl; // can change
 	return -(pr / 2.0)*u1_i*v2_i;
 }
 
-//double F(double nu, double v1_i, double v2_i, double u1_i) {
-	//cout << "nu = " << nu << endl;
-	//int f_size = f_values[0].size();
-	//for (int i = 0; i < f_size; i++) {
-		//cout << "nu, f_values[0][i] = " << nu << "," << f_values[0][i] << endl;
-		//if (nu == f_values[0][i]) {
-			//return f_values[1][i];
-		//}
-	//}
-	//cout << "Error: nu value not present" << endl;
-	//return 0.0;
-//}
+double f_prime_estimate(double neta) {
+	Interpolation interp;
+	vector<Data_Point> f_prime_values;
+	
+	for (unsigned int i = 38; i < 44/*f_and_g_values[0].size()*/; i++) {
+		f_prime_values.push_back(Data_Point(f_and_g_values[0][i], f_and_g_values[4][i]));		
+	}
+	
+	for (unsigned int i = 0; i < f_prime_values.size(); i++) {
+		cout << "neta, F' => " << f_prime_values[i].getX() << "," << f_prime_values[i].getY() << endl;
+	}
+	//return 0;
+	return interp.newtonsDividedDifferenceMethod(neta, f_prime_values);
+	
+}
 
 int main() {
 	double h = 0.1;
@@ -66,7 +71,58 @@ int main() {
 	 * 		3: F values
 	 * 		4: F' values
 	 * 		5: F'' values*/
+	prandtl = 4.0;
 	f_and_g_values = rk4_5_coupled(h, g1, g2, f1, f2, f3, max, t0, x10, x20, x30, x40, x50);
+	
+	// Finding non-dimensionalized velocities
+	// u component
+	/*cout << "mu, horizontal velocity, vertical velocity" << endl;
+	for (int i = 0; i < (int) f_and_g_values[0].size(); i++) {
+		double mu = f_and_g_values[0][i];
+		double f_prime = f_and_g_values[4][i];
+		double f = f_and_g_values[3][i];
+		double u_value = f_prime;
+		double v_value = 0.5*(mu*f_prime - f);
+		cout << mu <<"," << u_value << "," << v_value << endl;
+	}*/
+	
+	// Finding non-dimensionalized temperature for varying Pr values
+	prandtl= 0.2;
+	x20 = -0.185110; // Need G to approach 0, so make guess like before
+	vector<vector<double> > g_pr_fifth = rk4_5_coupled(h, g1, g2, f1, f2, f3, max, t0, x10, x20, x30, x40, x50);
+	
+	prandtl= 1.0;
+	x20 = -0.332057;
+	vector<vector<double> > g_pr_1 = rk4_5_coupled(h, g1, g2, f1, f2, f3, max, t0, x10, x20, x30, x40, x50);
+	
+	prandtl= 4.0;
+	x20 = -0.534787;
+	vector<vector<double> > g_pr_4 = rk4_5_coupled(h, g1, g2, f1, f2, f3, max, t0, x10, x20, x30, x40, x50);
+	
+	prandtl= 8.0;
+	x20 = -0.675580;
+	vector<vector<double> > g_pr_8 = rk4_5_coupled(h, g1, g2, f1, f2, f3, max, t0, x10, x20, x30, x40, x50);
+	
+	/*cout << "mu, G with Pr = 0.2, G with Pr = 1, G with Pr = 4, G with Pr = 8" << endl;
+	for (int i = 0; i < (int) g_pr_fifth[0].size(); i++) {
+		double mu = g_pr_fifth[0][i];
+		double pr_fifth = g_pr_fifth[1][i];
+		double pr_1 = g_pr_1[1][i];
+		double pr_4 = g_pr_4[1][i];
+		double pr_8 = g_pr_8[1][i];
+		cout << mu << "," << pr_fifth << "," << pr_1 << "," << pr_4 << "," << pr_8 << endl;
+	}*/
+	
+	// Finding neta_m Using Bisection and laGrange polynomials
+	f_prime_estimate(0.35);
+	
+	/*for (double i = 0.15; i < 0.4; i += 0.1) {
+		cout << "F'(" << i << ") = " << f_prime_estimate(i) << endl;
+	}*/
+	//double neta_m_estimate = bisection(f_prime_estimate, 0.95, 3.9, 4.0);
+	//cout << "neta_m = " << neta_m_estimate << endl;
+	
+	
 	//cout << "mu,G, G',F,F',F''" << endl;
 	//for (unsigned int i = 0; i < f_and_g_values[0].size(); i++) {
 		//cout << f_and_g_values[0][i] << "," << f_and_g_values[1][i] << "," << f_and_g_values[2][i] << "," << f_and_g_values[3][i] <<",";

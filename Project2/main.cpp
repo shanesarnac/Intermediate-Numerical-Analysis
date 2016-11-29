@@ -60,23 +60,23 @@ double g_estimate(double neta) {
 	double t0 = 0;
 	double x10 = 1; // G(0) = 1
 	
-	//double x20 = -0.185110; // Guess for G'(0) for prandtl = 0.2
+	double x20 = -0.184096; // Guess for G'(0) for prandtl = 0.2
 	//double x20 = -0.332057; // Guess for G'(0) for prandtl = 1.0
 	//double x20 = -0.534787; // Guess for G'(0) for prandtl = 4.0
-	double x20 = -0.675580; // Guess for G'(0) for prandtl = 8.0
+	//double x20 = -0.675580; // Guess for G'(0) for prandtl = 8.0
 	
 	double x30 = 0; // F(0) = 0
 	double x40 = 0; // F'(0) = 0
 	double x50 = 0.332057; // Guess for F''(0)
 	
-	//prandtl = 0.2;
+	prandtl = 0.2;
 	//prandtl = 1.0;
 	//prandtl= 4.0;
-	prandtl= 8.0;
+	//prandtl= 8.0;
 	
 	vector<vector<double> > estimates = rk4_5_coupled(h, g1, g2, f1, f2, f3, max, t0, x10, x20, x30, x40, x50);
 	vector<Data_Point> g_values;
-	for (unsigned int i = 13; i < 33; i++) {
+	for (unsigned int i = 75; i < 95; i++) {
 		g_values.push_back(Data_Point(estimates[0][i], estimates[1][i]));		
 	}
 	
@@ -89,7 +89,7 @@ double g_estimate(double neta) {
 
 int main() {
 	double h = 0.1;
-	double max = 40.0;
+	double max = 10.0;
 	double t0 = 0;
 	double x10 = 1; // G(0) = 1
 	double x20 = -0.534787; // Guess for G'(0)
@@ -136,7 +136,7 @@ int main() {
 	x20 = -0.675580;
 	vector<vector<double> > g_pr_8 = rk4_5_coupled(h, g1, g2, f1, f2, f3, max, t0, x10, x20, x30, x40, x50);
 	
-	cout << "mu, G with Pr = 0.2, G with Pr = 1, G with Pr = 4, G with Pr = 8" << endl;
+	/**cout << "mu, G with Pr = 0.2, G with Pr = 1, G with Pr = 4, G with Pr = 8" << endl;
 	for (int i = 0; i < (int) g_pr_fifth[0].size(); i++) {
 		double mu = g_pr_fifth[0][i];
 		double pr_fifth = g_pr_fifth[1][i];
@@ -144,14 +144,14 @@ int main() {
 		double pr_4 = g_pr_4[1][i];
 		double pr_8 = g_pr_8[1][i];
 		cout << mu << "," << pr_fifth << "," << pr_1 << "," << pr_4 << "," << pr_8 << endl;
-	}
+	}**/
 	
 	// Finding neta_m Using Bisection and laGrange polynomials
 
-	/**double neta_m_estimate = bisection(f_prime_estimate, 0.98, 4.5, 4.6);
-	cout << "neta_m = " << neta_m_estimate << endl;
-	double neta_t_estimate = bisection(g_estimate, 0.02, 2.2, 2.1);
-	cout << "neta_t = " << neta_t_estimate << endl; **/
+	//double neta_m_estimate = bisection(f_prime_estimate, 0.98, 4.5, 4.6);
+	//cout << "neta_m = " << neta_m_estimate << endl;
+	double neta_t_estimate = bisection(g_estimate, 0.02, 9.0, 7.0);
+	cout << "neta_t = " << neta_t_estimate << endl; 
 	
 	
 	//cout << "mu,G, G',F,F',F''" << endl;

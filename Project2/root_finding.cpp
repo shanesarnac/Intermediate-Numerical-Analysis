@@ -7,6 +7,8 @@ double epsilon = 0.0000000001;
 
 // f(guess1) < target and f(guess2) > target
 double bisection(double (*f)(double), double target, double guess1, double guess2) {
+	cout << "f(guess1) = " << f(guess1) << endl;
+	cout << "f(guess2) = " << f(guess2) << endl;
 	if (fabs(target - f(guess1)) < epsilon) {
 		return guess1;
 	}

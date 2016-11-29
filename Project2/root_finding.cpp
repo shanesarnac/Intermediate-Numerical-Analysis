@@ -3,11 +3,14 @@
 
 #include "root_finding.h"
 
+double epsilon = 0.0000000001;
+
+// f(guess1) < target and f(guess2) > target
 double bisection(double (*f)(double), double target, double guess1, double guess2) {
-	if (target == f(guess1)) {
+	if (fabs(target - f(guess1)) < epsilon) {
 		return guess1;
 	}
-	if (target == f(guess2)) {
+	if (fabs(target - f(guess2)) < epsilon) {
 		return guess2;
 	}
 	if((f(guess1) > target && f(guess2) > target) || (f(guess1) < target && f(guess2) < target)) {
@@ -16,7 +19,7 @@ double bisection(double (*f)(double), double target, double guess1, double guess
 	} 
 	
 	double new_estimate = 0.5*(guess1 + guess2);
-	if (f(new_estimate) == target)  {
+	if (fabs(f(new_estimate) - target) < epsilon)  {
 		return new_estimate;
 	}
 	else if (f(new_estimate) < target) {

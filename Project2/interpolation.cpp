@@ -6,7 +6,7 @@
 using namespace std;
 
 double Interpolation::laGrange(double x, vector<Data_Point> data) {
-	cout << "LaGrange Polynomial method: " << endl;
+	//cout << "LaGrange Polynomial method: " << endl;
 	
 	double estimate = 0;
 	int num_points = data.size();
@@ -15,7 +15,7 @@ double Interpolation::laGrange(double x, vector<Data_Point> data) {
 		return NAN;
 	}
 	
-	cout << "estimate = ";
+	//cout << "estimate = ";
 	for (int i = 0; i < num_points; i++) {
 		Data_Point temp(data[i].getX(), data[i].getY());
 		double product = 1;
@@ -26,13 +26,13 @@ double Interpolation::laGrange(double x, vector<Data_Point> data) {
 			}
 		}
 		product *= temp.getY();
-		cout << " + " << product;
+		//cout << " + " << product;
 		estimate += product;
 	}
-	cout << endl;
+	//cout << endl;
 	
 	
-	cout << "The estimate at x = " << x << " is " << setprecision(8) << estimate << " using a degree " << num_points -1 << " degree polynomial " << endl << endl;
+	//cout << "The estimate at x = " << x << " is " << setprecision(8) << estimate << " using a degree " << num_points -1 << " degree polynomial " << endl << endl;
 	
 	
 	return estimate;
